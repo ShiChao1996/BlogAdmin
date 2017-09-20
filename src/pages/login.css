@@ -1,0 +1,11 @@
+.loginBox{
+    width: 300px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgba(218, 235, 250, 0.65);
+    margin: 200px auto;
+}
+
+.login-form-button{
+    margin: 0 auto;
+}

@@ -4,7 +4,7 @@ import TweenOne, { TweenOneGroup } from 'rc-tween-one';
 import ticker from 'rc-tween-one/lib/ticker';
 import Radio from 'antd/lib/radio';
 import PropTypes from 'prop-types';
-import './welcome.css';
+import './animate.css';
 import {
   Route,
   Link
@@ -71,7 +71,7 @@ export default class LogoGather extends React.Component {
     for (let i = 0; i < w; i += number) {
       for (let j = 0; j < h; j += number) {
         if (data[((i + j * w) * 4) + 3] > 150) {
-          this.pointArray.push({ x: i, y: j });
+          this.pointArray.push({ x: i - 50, y: j });
         }
       }
     }
@@ -176,7 +176,7 @@ export default class LogoGather extends React.Component {
   };
 
   render() {
-    const child = this.props;
+    const { child } = this.props;
     return (
       <div className="logo-gather-demo-wrapper" style={{height: document.body.clientHeight}}>
         <canvas id="canvas"/>
