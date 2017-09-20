@@ -1,16 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { DatePicker } from 'antd';
+import {
+    Route,
+    Link,
+    Router,
+    hashHistory,
+    IndexRoute
+} from 'react-router';
+import './index.css';
+import Login from './src/pages/login';
+import ArticleDetail from './src/pages/articleDetail';
 
-function App() {
-  return (
-    <div style={{ margin: 100 }}>
-      <h1>AntDesign Demo</h1>
-      <hr /><br />
-      <DatePicker />
-    </div>
-  );
-}
+const router = (
+    <Router history={hashHistory}>
+        <Route path="/">
+            <IndexRoute component={Login} />
+            <Route path="/articles" component={ArticleDetail}/>
+        </Route>
 
-ReactDOM.render(<App />, document.getElementById('root'));
+    </Router>
+)
+
+ReactDOM.render(router, document.getElementById('root'));
