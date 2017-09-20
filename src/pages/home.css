@@ -1,0 +1,26 @@
+.body {
+    position: relative;
+    overflow: auto;
+    z-index: 5;
+    padding-bottom: 100px;
+}
+
+.bodyRight {
+    background-color: #364d79;
+    width: 800px;
+    margin-top: 30px;
+    margin-right: 80px;
+    float: right;
+}
+
+.bodyLeft {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box {
+    margin: 100px 30px;
+    height: 400px;
+    width: 260px;
+}

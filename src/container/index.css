@@ -1,0 +1,23 @@
+.container{
+    width: 100%;
+    min-width: 1000px;
+    margin: 0 auto;
+    position: absolute;
+    top: 0;
+    padding-top: 60px;
+    box-sizing: border-box;
+}
+
+.row{
+    height: 100%;
+    margin: 0 auto;
+}
+
+.left{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.right{
+}

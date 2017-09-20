@@ -1,0 +1,90 @@
+.header{
+    position: relative;
+    height: 400px;
+}
+
+.ant-carousel .slick-slide {
+    text-align: center;
+    height: 400px;
+    line-height: 400px;
+    background: #364d79;
+    overflow: hidden;
+}
+
+.ant-carousel .slick-slide h3 {
+    color: #fff;
+}
+
+.headBar{
+    width: 100%;
+    position: absolute;
+    z-index: 3;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.linksBox{
+    height: 60px;
+    box-sizing: border-box;
+    width: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.link{
+    color: white;
+    font-size: 14px !important;
+}
+
+.avatarBox{
+    height: 60px;
+    box-sizing: border-box;
+    padding: 0 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    float: right;
+}
+
+.name{
+    font-size: 18px;
+    color: #ffffff;
+    margin-left: 15px;
+}
+
+.pic{
+    width: 100%;
+}
+
+.mask{
+    height: 350px;
+    width: 100%;
+    position: relative;
+    top: -350px;
+    font-size: 40px;
+    color: white;
+}
+
+.title_1{
+    position: absolute;
+    left: 50px;
+    bottom: 20px;
+}
+.title_2{
+    position: absolute;
+    right: 100px;
+    top: 30px;
+}
+.title_3{
+    position: absolute;
+    left: 20px;
+    top: 20px;
+}
+.title_4{
+    position: absolute;
+    left: 45%;
+    top: 20px;
+}
