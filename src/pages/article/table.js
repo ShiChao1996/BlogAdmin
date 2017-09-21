@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Table, Icon, Menu, Dropdown, Button } from 'antd';
 
 const columns = [ {
-  title: 'Name',
+  title: 'Title',
   dataIndex: 'title',
-  key: 'name',
+  key: 'title',
 }, {
-  title: 'content',
-  dataIndex: 'content',
+  title: 'tag',
+  dataIndex: 'tag',
   key: 'age',
 }, {
   title: 'comments',
