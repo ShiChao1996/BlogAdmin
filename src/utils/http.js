@@ -84,7 +84,12 @@ function requestByPost(url, token, params, onSucceed, onFailure) {
         });
 }
 
+function getUrl(path) {
+  return 'http://127.0.0.1:7002/' + path;
+}
+
 export const Http = {
     get: requestByGet,
-    post: requestByPost
+    post: requestByPost,
+    url: getUrl
 };

@@ -4,7 +4,10 @@ const FormItem = Form.Item;
 import Animate from './animate';
 import './login.css';
 import { Http } from '../utils/http';
-import { browserHistory } from 'react-router'
+import {connect} from "react-redux";
+import {
+  login
+} from '../actions/index';
 
 class NormalLoginForm extends React.Component {
   handleSubmit = (e) => {
@@ -48,7 +51,7 @@ class NormalLoginForm extends React.Component {
 
 const WrappedNormalLoginForm = Form.create()(NormalLoginForm);
 
-export default class Welcome extends React.Component {
+class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -79,9 +82,12 @@ export default class Welcome extends React.Component {
   };
 
   handleLogin(value) {
-    Http.post('http://127.0.0.1:7003/admin/login', '', value, function (res) {
+    Http.post(Http.url('admin/login'), '', value, (res) => {
       console.log(res)
-      Cookies.set('adminToken', res.resp, { expires: 1 });
+      if(res.status === 0){
+        this.props.dispatch(login(res.resp));
+      }
+      // todo: 注释的方法只能实现url变化，无法跳转，用reload会导致短暂白屏。暂时用模拟点击实现跳转
       //browserHistory.push('/#/articles');
       //location.reload();
       //context.router.push('/#/articles')
@@ -90,3 +96,13 @@ export default class Welcome extends React.Component {
     })
   }
 }
+
+
+function select(store) {
+  return {
+    logged: store.admin.logged,
+    token: store.admin.token
+  }
+}
+
+export default connect(select)(Login);
