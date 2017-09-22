@@ -30,10 +30,10 @@ const initialState = {
   tags: []
 };
 
-export function admin(state = initialState, action) {
+export function article(state = initialState, action) {
   switch (action.type) {
     case Actions.ADD_ARTICLE_TAG: {
-      let newTags = this.state.tags.map(_ => _);
+      let newTags = state.tags.map(_ => _);
       newTags.push(action.tag);
       return { ...state, tags: newTags };
     }
