@@ -34,7 +34,8 @@ const initialState = {
 export function admin(state = initialState, action) {
   switch (action.type) {
     case Actions.USER_LOGIN: {
-      return { ...state, logged: true };
+      let token = action.token;
+      return { ...state, logged: true, token: token };
     }
 
     case Actions.USER_LOGOUT: {

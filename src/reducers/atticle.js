@@ -24,17 +24,25 @@
 
 "use strict";
 
-module.exports = {
-  //user
-  USER_LOGIN: "USER_LOGIN",
-  USER_LOGOUT:"USER_LOGOUT",
+import Actions from "../actions/config";
 
-
-  //article
-  ADD_ARTICLE_TAG: "ADD_ARTICLE_TAG",
-  REMOVE_ARTICLE_TAG: "REMOVE_ARTICLE_TAG",
-
-  //http
-  GET_PERSONAL_PAGE_INFO: "GET_PERSONAL_PAGE_INFO",
-  GET_USER_INFO: "GET_USER_INFO"
+const initialState = {
+  tags: []
 };
+
+export function admin(state = initialState, action) {
+  switch (action.type) {
+    case Actions.ADD_ARTICLE_TAG: {
+      let newTags = this.state.tags.map(_ => _);
+      newTags.push(action.tag);
+      return { ...state, tags: newTags };
+    }
+
+    case Actions.REMOVE_ARTICLE_TAG: {
+      let newTags = this.state.tags.filter(tag => tag !== action.tag);
+      return { ...state, tags: newTags };
+    }
+  }
+
+  return state;
+}

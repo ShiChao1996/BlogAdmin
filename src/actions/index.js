@@ -25,9 +25,11 @@
 "use strict";
 
 import { admin } from "./admin";
+import { article } from "./article";
 
 module.exports = {
-  ...admin
+  ...admin,
+  ...article
 };
 
 // actions/

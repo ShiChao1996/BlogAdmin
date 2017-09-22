@@ -22,19 +22,22 @@
  * SOFTWARE.
  */
 
-"use strict";
+import Actions from "./config";
 
-module.exports = {
-  //user
-  USER_LOGIN: "USER_LOGIN",
-  USER_LOGOUT:"USER_LOGOUT",
+function addTag(tag) {
+  return {
+    type: Actions.ADD_ARTICLE_TAG,
+    tag: tag
+  };
+}
 
+function removeTag(tag) {
+  return {
+    type: Actions.REMOVE_ARTICLE_TAG,
+    tag: tag
+  };
+}
 
-  //article
-  ADD_ARTICLE_TAG: "ADD_ARTICLE_TAG",
-  REMOVE_ARTICLE_TAG: "REMOVE_ARTICLE_TAG",
-
-  //http
-  GET_PERSONAL_PAGE_INFO: "GET_PERSONAL_PAGE_INFO",
-  GET_USER_INFO: "GET_USER_INFO"
+export const article = {
+  addTag,
 };
