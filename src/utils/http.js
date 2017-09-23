@@ -1,7 +1,7 @@
 
 'use strict';
 
-const TIMEOUT = 5 * 1000;
+const TIMEOUT = 10 * 1000;
 
 function promiseTimeout(ms, promise) {
     return new Promise((resolve, reject) => {

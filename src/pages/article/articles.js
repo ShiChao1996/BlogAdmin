@@ -1,85 +1,17 @@
 import React, { Component } from 'react';
-import { Input, Icon, Modal, Button, Form } from 'antd';
+import { Modal, Button } from 'antd';
 import { connect } from "react-redux";
 
 import { Http } from '../../utils/http';
 import Table from './table';
-import Tags from '../../components/tagsGroup';
-import { tools } from '../../utils/tools';
-import ArticleDetail from './articleDetail';
 import './articles.css';
 import {
   clear,
   editArticle
 } from '../../actions/index';
+import WrappedAddForm from './addArticleModal';
 
-const FormItem = Form.Item;
 let newArticle = {};
-
-class AddForm extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      visible: false,
-
-    }
-  }
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
-        newArticle = tools.copyAttr(newArticle, values, true);
-        this.props.save();
-      }
-    });
-  }
-  handleCancel = () => {
-    this.setState({ visible: false });
-  }
-
-  render() {
-    const { getFieldDecorator } = this.props.form;
-    return (
-      <Form onSubmit={this.handleSubmit} className="login-form">
-        <FormItem>
-          {getFieldDecorator('title', {
-            rules: [ { required: true, message: 'Please input title!' } ],
-          })(
-            <Input prefix={<Icon type="bars" style={{ fontSize: 14 }}/>} placeholder="title"/>
-          )}
-        </FormItem>
-
-        <FormItem>
-          <Tags initTags={this.props.initTags}/>
-        </FormItem>
-        <FormItem>
-          <Button onClick={() => this.setState({ visible: true })}>添加内容</Button>
-          <Modal
-            width='90%'
-            style={{top: 20}}
-            visible={this.state.visible}
-            title="Title"
-            onOk={this.handleOk}
-            onCancel={this.handleCancel}
-            footer={null}
-          >
-            <ArticleDetail closeModal={() => this.setState({ visible: false })}/>
-          </Modal>
-        </FormItem>
-        <FormItem>
-          <Button key="back" size="large" onClick={() => this.props.closeModal()}>Return</Button>
-          <Button type="primary" htmlType="submit" className="login-form-button">
-            Submit
-          </Button>
-        </FormItem>
-      </Form>
-    );
-  }
-}
-
-const WrappedAddForm = Form.create()(AddForm);
-
 
 class Articles extends Component {
   constructor(props) {
@@ -121,8 +53,8 @@ class Articles extends Component {
     this.setData();
     this.setState({ loading: false, visible: false });
 
-    Http.post(Http.url('article/update'), this.props.token, newArticle, (res) => {
-      console.log('res: ', res)
+    Http.post(Http.url('article/upsert'), this.props.token, newArticle, (res) => {
+      console.log('res: ', res);
       this.props.dispatch(clear());
       this.setState({ loading: false, visible: false });
     }, (err) => {

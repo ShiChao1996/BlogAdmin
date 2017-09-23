@@ -50,6 +50,7 @@ export function article(state = initialState, action) {
     }
 
     case Actions.EDIT_ARTICLE: {
+      console.log('set article: ', action.article)
       return { ...state, article: action.article };
     }
 
