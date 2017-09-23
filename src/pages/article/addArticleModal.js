@@ -12,7 +12,6 @@ import {
 } from '../../actions/index';
 
 const FormItem = Form.Item;
-let newArticle = {};
 
 class AddForm extends Component {
   constructor(props) {
@@ -32,7 +31,7 @@ class AddForm extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
-        newArticle = tools.copyAttr(newArticle, values, true);
+        this.props.dispatch(editArticle(values));
         this.props.save();
       }
     });
@@ -56,7 +55,7 @@ class AddForm extends Component {
         </FormItem>
 
         <FormItem>
-          <Tags defaultTags={this.props.tags}/>
+          <Tags defaultTags={this.props.article.tags}/>
         </FormItem>
         <FormItem>
           <Button onClick={() => this.setState({ visible: true })}>添加内容</Button>
@@ -88,8 +87,6 @@ const WrappedAddForm = Form.create()(AddForm);
 function select(store) {
   return {
     token: store.admin.token,
-    tags: store.article.tags,
-    content: store.article.content,
     article: store.article.article
   }
 }

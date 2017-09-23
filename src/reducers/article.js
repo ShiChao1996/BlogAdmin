@@ -25,38 +25,48 @@
 "use strict";
 
 import Actions from "../actions/config";
+import { tools } from '../utils/tools';
 
 const initialState = {
-  tags: [],
-  content: '',
   article: {}
 };
 
 export function article(state = initialState, action) {
   switch (action.type) {
     case Actions.ADD_ARTICLE_TAG: {
-      let newTags = state.tags.map(_ => _);
-      newTags.push(action.tag);
-      return { ...state, tags: newTags };
+      let article = state.article;
+      //article.tags = [...article.tags, action.tag];
+      if(article.tags){
+        article.tags.push(action.tag);
+      }else{
+        article.tags = [action.tag];
+      }
+      console.log('reducer: ', article.tags)
+      return { ...state, article: article };
     }
 
     case Actions.REMOVE_ARTICLE_TAG: {
-      let newTags = this.state.tags.filter(tag => tag !== action.tag);
-      return { ...state, tags: newTags };
+      let article = state.article;
+      article.tags = this.state.tags.filter(tag => tag !== action.tag);
+      return { ...state, article: article };
     }
 
     case Actions.SAVE_CONTENT: {
-      return { ...state, content: action.content };
+      let article = state.article;
+      article.content = action.content;
+      return { ...state, article: article };
     }
 
     case Actions.EDIT_ARTICLE: {
-      console.log('set article: ', action.article)
-      return { ...state, article: action.article };
+      let article = tools.copyAttr(state.article, action.article, true);
+
+      console.log('set article: ', article)
+      return { ...state, article: article };
     }
 
     case Actions.CLEAR: {
       console.log('cleared!!!!!!!')
-      return { ...state, article: {}, content: '', tags: [] }
+      return { ...state, article: {} }
     }
   }
 

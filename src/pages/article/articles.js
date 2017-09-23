@@ -11,8 +11,6 @@ import {
 } from '../../actions/index';
 import WrappedAddForm from './addArticleModal';
 
-let newArticle = {};
-
 class Articles extends Component {
   constructor(props) {
     super(props);
@@ -53,7 +51,7 @@ class Articles extends Component {
     this.setData();
     this.setState({ loading: false, visible: false });
 
-    Http.post(Http.url('article/upsert'), this.props.token, newArticle, (res) => {
+    Http.post(Http.url('article/upsert'), this.props.token, this.props.article, (res) => {
       console.log('res: ', res);
       this.props.dispatch(clear());
       this.setState({ loading: false, visible: false });
@@ -67,14 +65,13 @@ class Articles extends Component {
   };
 
   setData = () => {
-    newArticle.tag = [...this.props.tags];
+    let newArticle = {};
     newArticle.date = new Date().toISOString();
-    newArticle.content = this.props.content;
-    let list = [...this.state.articleList, newArticle].map((ele, index) => {
+    this.props.dispatch(editArticle(newArticle));
+    let list = [...this.state.articleList, this.props.article].map((ele, index) => {
       ele.key = index;
       return ele;
     });
-    console.log('list: ', list);
     this.setState({
       articleList: list
     });
@@ -109,7 +106,7 @@ class Articles extends Component {
           </Modal>
         </div>
         <Table dataSource={this.state.articleList}
-               initTags={this.props.tags}
+               initTags={this.props.article.tags}
                editArticle={(index, article) => this.editArticle(index, article)}/>
       </div>
     )
@@ -119,8 +116,7 @@ class Articles extends Component {
 function select(store) {
   return {
     token: store.admin.token,
-    tags: store.article.tags,
-    content: store.article.content
+    article: store.article.article
   }
 }
 

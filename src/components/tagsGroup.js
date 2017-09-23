@@ -16,18 +16,16 @@ class EditableTagGroup extends Component {
   }
 
   componentWillMount(){
-    if(this.props.tags){
+    if(this.props.article.tags){
       this.setState({
-        tags: this.props.tags
+        tags: this.props.article.tags
       });
-      console.log("this is tags :", this.props.tags);
     }
   }
 
 
   handleClose = (removedTag) => {
     const tags = this.state.tags.filter(tag => tag !== removedTag);
-    console.log(tags);
     this.setState({ tags });
   }
 
@@ -92,7 +90,7 @@ class EditableTagGroup extends Component {
 
 function select(store) {
   return {
-    tags: store.article.tags,
+    article: store.article.article,
   }
 }
 export default connect(select)(EditableTagGroup);

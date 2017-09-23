@@ -18,7 +18,7 @@ export default class articleTable extends Component {
       key: 'title',
     }, {
       title: 'tags',
-      dataIndex: 'tag',
+      dataIndex: 'tags',
       key: 'tag',
       render: (tags) => {
         return tags.map((tag, index) => {
