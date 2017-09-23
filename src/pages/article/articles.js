@@ -1,12 +1,15 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { Input, Icon, Modal, Button, Form } from 'antd';
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
-import {Http} from '../../utils/http';
+import { Http } from '../../utils/http';
 import Table from './table';
+import Tags from '../../components/tagsGroup';
+import { tools } from '../../utils/tools';
 import './articles.css';
 
 const FormItem = Form.Item;
+let newArticle = {};
 
 class AddForm extends React.Component {
   handleSubmit = (e) => {
@@ -14,6 +17,8 @@ class AddForm extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        newArticle = tools.copyAttr(newArticle, values, true);
+        this.props.save();
       }
     });
   }
@@ -24,17 +29,17 @@ class AddForm extends React.Component {
       <Form onSubmit={this.handleSubmit} className="login-form">
         <FormItem>
           {getFieldDecorator('title', {
-            rules: [ { required: true, message: 'Please input your username!' } ],
+            rules: [ { required: true, message: 'Please input title!' } ],
           })(
-            <Input prefix={<Icon type="user" style={{ fontSize: 13 }}/>} placeholder="Username"/>
+            <Input prefix={<Icon type="bars" style={{ fontSize: 14 }}/>} placeholder="title"/>
           )}
         </FormItem>
 
         <FormItem>
-          {getFieldDecorator('tag', {
-            rules: [ { required: true, message: 'Please input your Password!' } ],
+          {getFieldDecorator('desc', {
+            rules: [ { required: true, message: 'Please input description!' } ],
           })(
-            <Input prefix={<Icon type="lock" style={{ fontSize: 13 }}/>} type="password" placeholder="Password"/>
+            <Input prefix={<Icon type="file-text" style={{ fontSize: 14 }}/>} type="text" placeholder="description"/>
           )}
         </FormItem>
 
@@ -42,18 +47,29 @@ class AddForm extends React.Component {
           {getFieldDecorator('password', {
             rules: [ { required: true, message: 'Please input your Password!' } ],
           })(
-            <Input prefix={<Icon type="lock" style={{ fontSize: 13 }}/>} type="password" placeholder="Password"/>
+            <Input prefix={<Icon type="lock" style={{ fontSize: 14 }}/>} type="text" placeholder="Password"/>
           )}
+        </FormItem>
+
+        <FormItem>
+          <Tags/>
+        </FormItem>
+        <FormItem>
+          <Button key="back" size="large" onClick={() => this.props.closeModal()}>Return</Button>
+          <Button type="primary" htmlType="submit" className="login-form-button">
+            Submit
+          </Button>
         </FormItem>
       </Form>
     );
   }
 }
+
 const WrappedAddForm = Form.create()(AddForm);
 
 
-class Articles extends Component{
-  constructor(props){
+class Articles extends Component {
+  constructor(props) {
     super(props);
     this.state = {
       articleList: [],
@@ -62,11 +78,12 @@ class Articles extends Component{
     }
   }
 
-  componentWillMount(){
-    const token =  this.props.token;
+  componentWillMount() {
+    const token = this.props.token;
     console.log('token: ', token);
     Http.get(Http.url('article/getlist'), token, (res) => {
-      if(res.status === 0){
+      if (res.status === 0 && res.resp) {
+        console.log(res)
         let data = res.resp.map((ele, index) => {
           ele.key = index;
           return ele;
@@ -88,16 +105,32 @@ class Articles extends Component{
   }
   handleOk = () => {
     this.setState({ loading: true });
-    setTimeout(() => {
+    this.setData();
+    this.setState({ loading: false, visible: false });
+
+    /*setTimeout(() => {
       this.setState({ loading: false, visible: false });
-    }, 3000);
+    }, 2000);*/
   }
   handleCancel = () => {
     this.setState({ visible: false });
   }
 
-  render(){
-    return(
+  setData = () => {
+    newArticle.tag = [...this.props.tags];
+    newArticle.date = new Date().toISOString();
+    let list = [...this.state.articleList, newArticle].map((ele, index) => {
+      ele.key = index;
+      return ele;
+    });
+    console.log('list: ', list)
+    this.setState({
+      articleList: list
+    })
+  }
+
+  render() {
+    return (
       <div className="articles">
         <div>
           <Button type="primary" onClick={this.showModal}>
@@ -108,16 +141,12 @@ class Articles extends Component{
             title="Title"
             onOk={this.handleOk}
             onCancel={this.handleCancel}
-            footer={[
-              <Button key="back" size="large" onClick={this.handleCancel}>Return</Button>,
-              <Button key="submit" type="primary" size="large" loading={this.state.loading} onClick={this.handleOk}>
-                Submit
-              </Button>,
-            ]}
+            footer={null}
           >
-            <WrappedAddForm />
+            <WrappedAddForm closeModal={() => this.handleCancel()} save={() => this.handleOk()} />
           </Modal>
-        </div>        <Table dataSource={this.state.articleList} />
+        </div>
+        <Table dataSource={this.state.articleList}/>
       </div>
     )
   }
@@ -125,7 +154,8 @@ class Articles extends Component{
 
 function select(store) {
   return {
-    token: store.admin.token
+    token: store.admin.token,
+    tags: store.article.tags
   }
 }
 
