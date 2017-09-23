@@ -21,9 +21,9 @@ class ArticleDetail extends Component {
   }
 
   componentWillMount() {
-    if (this.props.content) {
+    if (this.props.article) {
       this.setState({
-        text: this.props.content
+        text: this.props.article.content
       })
     }
   }
@@ -39,7 +39,9 @@ class ArticleDetail extends Component {
         <div className="content">
           <Row>
             <Col span={12}>
-              <TextArea rows={30} onChange={(e) => this.setState({ text: e.target.value })}/>
+              <TextArea rows={30}
+                        defaultValue={this.state.text}
+                        onChange={(e) => this.setState({ text: e.target.value })}/>
             </Col>
             <Col span={12}>
               <div className='markDownContainer'>
@@ -54,4 +56,10 @@ class ArticleDetail extends Component {
   }
 }
 
-export default connect()(ArticleDetail);
+function select(store) {
+  return {
+    token: store.admin.token,
+    article: store.article.article
+  }
+}
+export default connect(select)(ArticleDetail);

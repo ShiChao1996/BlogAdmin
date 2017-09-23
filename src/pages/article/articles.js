@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Button } from 'antd';
+import { Modal, Button, notification, Icon } from 'antd';
 import { connect } from "react-redux";
 
 import { Http } from '../../utils/http';
@@ -10,6 +10,14 @@ import {
   editArticle
 } from '../../actions/index';
 import WrappedAddForm from './addArticleModal';
+
+const openNotification = () => {
+  notification.open({
+    message: 'Notification Title',
+    description: 'This is the content of the notification. This is the content of the notification.',
+    icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
+  });
+};
 
 class Articles extends Component {
   constructor(props) {
@@ -46,7 +54,12 @@ class Articles extends Component {
       visible: true,
     });
   }
+
   handleOk = () => {
+    if (this.props.article.tags.length === 0) {
+      openNotification();
+      return;
+    }
     this.setState({ loading: true });
     this.setData();
     this.setState({ loading: false, visible: false });
@@ -68,7 +81,7 @@ class Articles extends Component {
     let newArticle = {};
     newArticle.date = new Date().toISOString();
     this.props.dispatch(editArticle(newArticle));
-    let list = [...this.state.articleList, this.props.article].map((ele, index) => {
+    let list = [ ...this.state.articleList, this.props.article ].map((ele, index) => {
       ele.key = index;
       return ele;
     });
@@ -77,7 +90,7 @@ class Articles extends Component {
     });
   };
 
-  editArticle(index, article){
+  editArticle(index, article) {
     console.log(index, article)
     this.props.dispatch(editArticle(article))
     this.setState({
@@ -102,7 +115,7 @@ class Articles extends Component {
             <WrappedAddForm
               article={this.props.article}
               closeModal={() => this.handleCancel()}
-              save={() => this.handleOk()} />
+              save={() => this.handleOk()}/>
           </Modal>
         </div>
         <Table dataSource={this.state.articleList}
