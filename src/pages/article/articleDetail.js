@@ -21,11 +21,14 @@ class ArticleDetail extends Component {
   }
 
   componentWillMount() {
-
+    if (this.props.content) {
+      this.setState({
+        text: this.props.content
+      })
+    }
   }
 
-  saveArticle(){
-    console.log('fdfdfdfdf')
+  saveArticle() {
     this.props.dispatch(saveContent(this.state.text))
   }
 
@@ -35,7 +38,7 @@ class ArticleDetail extends Component {
         <div className="content">
           <Row>
             <Col span={12}>
-              <TextArea rows={30} onChange={(e) => this.setState({text: e.target.value})} />
+              <TextArea rows={30} onChange={(e) => this.setState({ text: e.target.value })}/>
             </Col>
             <Col span={12}>
               <div className='markDownContainer'>

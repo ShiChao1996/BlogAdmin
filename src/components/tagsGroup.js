@@ -15,6 +15,14 @@ class EditableTagGroup extends Component {
     };
   }
 
+  componentWillMount(){
+    if(this.props.initTags){
+      this.setState({
+        tags: this.props.initTags
+      })
+    }
+  }
+
 
   handleClose = (removedTag) => {
     const tags = this.state.tags.filter(tag => tag !== removedTag);

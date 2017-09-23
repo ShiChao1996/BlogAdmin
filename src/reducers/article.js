@@ -28,7 +28,8 @@ import Actions from "../actions/config";
 
 const initialState = {
   tags: [],
-  content: ''
+  content: '',
+  article: {}
 };
 
 export function article(state = initialState, action) {
@@ -46,6 +47,10 @@ export function article(state = initialState, action) {
 
     case Actions.SAVE_CONTENT: {
       return { ...state, content: action.content };
+    }
+
+    case Actions.EDIT_ARTICLE: {
+      return { ...state, article: action.article };
     }
   }
 

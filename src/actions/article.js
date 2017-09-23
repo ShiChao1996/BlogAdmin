@@ -45,8 +45,16 @@ function saveContent(content) {
   };
 }
 
+function editArticle(article) {
+  return {
+    type: Actions.EDIT_ARTICLE,
+    article: article
+  };
+}
+
 export const article = {
   addTag,
   removeTag,
-  saveContent
+  saveContent,
+  editArticle
 };

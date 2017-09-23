@@ -33,9 +33,6 @@ class AddForm extends Component {
     this.setState({ visible: false });
   }
 
-  save = () => {
-  }
-
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
@@ -65,7 +62,7 @@ class AddForm extends Component {
         </FormItem>
 
         <FormItem>
-          <Tags/>
+          <Tags initTags={this.props.initTags}/>
         </FormItem>
         <FormItem>
           <Button onClick={() => this.setState({ visible: true })}>添加内容</Button>
@@ -160,6 +157,10 @@ class Articles extends Component {
     });
   };
 
+  editArticle(index, article){
+    console.log(index, article)
+  }
+
   render() {
     return (
       <div className="articles">
@@ -177,7 +178,9 @@ class Articles extends Component {
             <WrappedAddForm closeModal={() => this.handleCancel()} save={() => this.handleOk()} />
           </Modal>
         </div>
-        <Table dataSource={this.state.articleList}/>
+        <Table dataSource={this.state.articleList}
+               initTags={this.props.tags}
+               editArticle={(index, article) => this.editArticle(index, article)}/>
       </div>
     )
   }
