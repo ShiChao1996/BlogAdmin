@@ -1,5 +1,21 @@
 
+.detailContainer{
+    background-color: white;
+    overflow: auto;
+}
+
 .content{
-    width: 700px;
-    margin: 60px auto;
+    width: 100%;
+    margin: 10px auto;
+    border: 2px solid #019bf0;
+}
+
+.markDownContainer{
+    height: 550px;
+    overflow-y: scroll;
+}
+
+.saveBtn{
+    float: right;
+    margin: 5px 20px;
 }

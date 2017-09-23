@@ -6,12 +6,19 @@ import { Http } from '../../utils/http';
 import Table from './table';
 import Tags from '../../components/tagsGroup';
 import { tools } from '../../utils/tools';
+import ArticleDetail from './articleDetail';
 import './articles.css';
 
 const FormItem = Form.Item;
 let newArticle = {};
 
-class AddForm extends React.Component {
+class AddForm extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      visible: false,
+    }
+  }
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -21,6 +28,12 @@ class AddForm extends React.Component {
         this.props.save();
       }
     });
+  }
+  handleCancel = () => {
+    this.setState({ visible: false });
+  }
+
+  save = () => {
   }
 
   render() {
@@ -53,6 +66,20 @@ class AddForm extends React.Component {
 
         <FormItem>
           <Tags/>
+        </FormItem>
+        <FormItem>
+          <Button onClick={() => this.setState({ visible: true })}>添加内容</Button>
+          <Modal
+            width='90%'
+            style={{top: 20}}
+            visible={this.state.visible}
+            title="Title"
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+            footer={null}
+          >
+            <ArticleDetail />
+          </Modal>
         </FormItem>
         <FormItem>
           <Button key="back" size="large" onClick={() => this.props.closeModal()}>Return</Button>
@@ -108,33 +135,37 @@ class Articles extends Component {
     this.setData();
     this.setState({ loading: false, visible: false });
 
-    /*setTimeout(() => {
+    Http.post(Http.url('article/update'), this.props.token, newArticle, (res) => {
+      console.log('res: ', res)
       this.setState({ loading: false, visible: false });
-    }, 2000);*/
-  }
+    }, (err) => {
+      console.log('err: ', err);
+    })
+  };
   handleCancel = () => {
     this.setState({ visible: false });
-  }
+  };
 
   setData = () => {
     newArticle.tag = [...this.props.tags];
     newArticle.date = new Date().toISOString();
+    newArticle.content = this.props.content;
     let list = [...this.state.articleList, newArticle].map((ele, index) => {
       ele.key = index;
       return ele;
     });
-    console.log('list: ', list)
+    console.log('list: ', list);
     this.setState({
       articleList: list
-    })
-  }
+    });
+  };
 
   render() {
     return (
       <div className="articles">
         <div>
           <Button type="primary" onClick={this.showModal}>
-            Open
+            add
           </Button>
           <Modal
             visible={this.state.visible}
@@ -155,7 +186,8 @@ class Articles extends Component {
 function select(store) {
   return {
     token: store.admin.token,
-    tags: store.article.tags
+    tags: store.article.tags,
+    content: store.article.content
   }
 }
 

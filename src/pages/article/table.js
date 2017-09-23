@@ -27,20 +27,20 @@ const columns = [ {
     const menu = (
       <Menu>
         <Menu.Item>
-          <a>编辑属性</a>
+          <Button>编辑属性</Button>
         </Menu.Item>
         <Menu.Item>
-          <a>编辑文章</a>
+          <Button>编辑文章</Button>
         </Menu.Item>
         <Menu.Item>
-          <a>删除</a>
+          <Button>删除</Button>
         </Menu.Item>
       </Menu>
     );
 
     return (
-      <Dropdown overlay={menu} placement="edit">
-        <Button>bottomRight</Button>
+      <Dropdown overlay={menu} placement="bottomRight">
+        <Button>edit</Button>
       </Dropdown>
     )
   },
