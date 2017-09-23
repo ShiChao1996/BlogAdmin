@@ -27,7 +27,8 @@
 import Actions from "../actions/config";
 
 const initialState = {
-  tags: []
+  tags: [],
+  content: ''
 };
 
 export function article(state = initialState, action) {
@@ -41,6 +42,10 @@ export function article(state = initialState, action) {
     case Actions.REMOVE_ARTICLE_TAG: {
       let newTags = this.state.tags.filter(tag => tag !== action.tag);
       return { ...state, tags: newTags };
+    }
+
+    case Actions.SAVE_CONTENT: {
+      return { ...state, content: action.content };
     }
   }
 

@@ -38,6 +38,15 @@ function removeTag(tag) {
   };
 }
 
+function saveContent(content) {
+  return {
+    type: Actions.SAVE_CONTENT,
+    content: content
+  };
+}
+
 export const article = {
   addTag,
+  removeTag,
+  saveContent
 };
