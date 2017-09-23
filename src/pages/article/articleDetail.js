@@ -29,7 +29,8 @@ class ArticleDetail extends Component {
   }
 
   saveArticle() {
-    this.props.dispatch(saveContent(this.state.text))
+    this.props.dispatch(saveContent(this.state.text));
+    this.props.closeModal && this.props.closeModal();
   }
 
   render() {

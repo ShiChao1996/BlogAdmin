@@ -8,6 +8,10 @@ import Tags from '../../components/tagsGroup';
 import { tools } from '../../utils/tools';
 import ArticleDetail from './articleDetail';
 import './articles.css';
+import {
+  clear,
+  editArticle
+} from '../../actions/index';
 
 const FormItem = Form.Item;
 let newArticle = {};
@@ -17,6 +21,7 @@ class AddForm extends Component {
     super(props);
     this.state = {
       visible: false,
+
     }
   }
   handleSubmit = (e) => {
@@ -46,22 +51,6 @@ class AddForm extends Component {
         </FormItem>
 
         <FormItem>
-          {getFieldDecorator('desc', {
-            rules: [ { required: true, message: 'Please input description!' } ],
-          })(
-            <Input prefix={<Icon type="file-text" style={{ fontSize: 14 }}/>} type="text" placeholder="description"/>
-          )}
-        </FormItem>
-
-        <FormItem>
-          {getFieldDecorator('password', {
-            rules: [ { required: true, message: 'Please input your Password!' } ],
-          })(
-            <Input prefix={<Icon type="lock" style={{ fontSize: 14 }}/>} type="text" placeholder="Password"/>
-          )}
-        </FormItem>
-
-        <FormItem>
           <Tags initTags={this.props.initTags}/>
         </FormItem>
         <FormItem>
@@ -75,7 +64,7 @@ class AddForm extends Component {
             onCancel={this.handleCancel}
             footer={null}
           >
-            <ArticleDetail />
+            <ArticleDetail closeModal={() => this.setState({ visible: false })}/>
           </Modal>
         </FormItem>
         <FormItem>
@@ -134,12 +123,14 @@ class Articles extends Component {
 
     Http.post(Http.url('article/update'), this.props.token, newArticle, (res) => {
       console.log('res: ', res)
+      this.props.dispatch(clear());
       this.setState({ loading: false, visible: false });
     }, (err) => {
       console.log('err: ', err);
     })
   };
   handleCancel = () => {
+    this.props.dispatch(clear());
     this.setState({ visible: false });
   };
 
@@ -159,6 +150,10 @@ class Articles extends Component {
 
   editArticle(index, article){
     console.log(index, article)
+    this.props.dispatch(editArticle(article))
+    this.setState({
+      visible: true
+    })
   }
 
   render() {
@@ -175,7 +170,10 @@ class Articles extends Component {
             onCancel={this.handleCancel}
             footer={null}
           >
-            <WrappedAddForm closeModal={() => this.handleCancel()} save={() => this.handleOk()} />
+            <WrappedAddForm
+              article={this.props.article}
+              closeModal={() => this.handleCancel()}
+              save={() => this.handleOk()} />
           </Modal>
         </div>
         <Table dataSource={this.state.articleList}

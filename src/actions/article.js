@@ -52,9 +52,16 @@ function editArticle(article) {
   };
 }
 
+function clear() {
+  return {
+    type: Actions.CLEAR
+  }
+}
+
 export const article = {
   addTag,
   removeTag,
   saveContent,
-  editArticle
+  editArticle,
+  clear
 };

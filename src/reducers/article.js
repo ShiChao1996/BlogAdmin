@@ -52,6 +52,11 @@ export function article(state = initialState, action) {
     case Actions.EDIT_ARTICLE: {
       return { ...state, article: action.article };
     }
+
+    case Actions.CLEAR: {
+      console.log('cleared!!!!!!!')
+      return { ...state, article: {}, content: '', tags: [] }
+    }
   }
 
   return state;
