@@ -17,15 +17,23 @@ const { TextArea } = Input;
 class ArticleDetail extends Component {
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {
+      text: ''
+    }
   }
 
   componentWillMount() {
-    if (this.props.article) {
+    if (this.props.article.content) {
       this.setState({
         text: this.props.article.content
       })
     }
+  }
+
+  componentWillReceiveProps(props){
+    this.setState({
+      text: props.article.content | ''
+    })
   }
 
   saveArticle() {

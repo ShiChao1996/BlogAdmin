@@ -29,6 +29,10 @@ export default class articleTable extends Component {
       title: 'date',
       dataIndex: 'date',
       key: 'date',
+      render: (date) => {
+        console.log(date)
+        return <span><Icon type="calendar" />{date || new Date().toISOString()}</span>
+      }
     }, {
       title: 'Action',
       dataIndex: 'key',
