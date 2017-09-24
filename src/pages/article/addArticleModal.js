@@ -18,44 +18,37 @@ class AddForm extends Component {
     super(props);
     this.state = {
       visible: false,
-      defaultTitle: ''
+      title: this.props.article.title,
+      article: this.props.article
     }
   }
 
-  componentWillReceiveProps(props){
-    console.log('receiveddddd: ',props.article)
+  componentWillReceiveProps(props) {
+    console.log('thsi.is props received: ', props.article)
+    this.setState({
+      article: props.article,
+      title: props.article.title
+    })
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
-        this.props.dispatch(editArticle(values));
+  handleSubmit = () => {
+        this.props.dispatch(editArticle({ title: this.state.title }));
         this.props.save();
-      }
-    });
   }
   handleCancel = () => {
     this.setState({ visible: false });
   }
 
   render() {
-    const { getFieldDecorator } = this.props.form;
-    console.log()
     return (
-      <Form onSubmit={this.handleSubmit} className="login-form">
+      <Form className="login-form">
         <FormItem>
-          {getFieldDecorator('title', {
-            rules: [ { required: true, message: 'Please input title!' } ],
-            initialValue: this.props.article.title
-          })(
-            <Input prefix={<Icon type="bars" style={{ fontSize: 14 }}/>} placeholder="title"/>
-          )}
+          <Input value={this.state.title} onChange={(e) => this.setState({ title: e.target.value })}
+            prefix={<Icon type="bars" style={{ fontSize: 14 }}/>} placeholder="title"/>
         </FormItem>
 
         <FormItem>
-          <Tags defaultTags={this.props.article.tags}/>
+          <Tags/>
         </FormItem>
         <FormItem>
           <Button onClick={() => this.setState({ visible: true })}>添加内容</Button>
@@ -73,7 +66,7 @@ class AddForm extends Component {
         </FormItem>
         <FormItem>
           <Button key="back" size="large" onClick={() => this.props.closeModal()}>Return</Button>
-          <Button type="primary" htmlType="submit" className="login-form-button">
+          <Button type="primary" className="login-form-button" onClick={() => this.handleSubmit()}>
             Submit
           </Button>
         </FormItem>

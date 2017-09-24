@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import { Tag, Input, Tooltip, Button } from 'antd';
 import {connect} from "react-redux";
 import {
-  addTag
+  addTag,
+  removeTag
 } from '../actions/index';
 
 class EditableTagGroup extends Component {
@@ -23,9 +24,16 @@ class EditableTagGroup extends Component {
     }
   }
 
+  componentWillReceiveProps(props){
+    console.log('this.is default tags: ', props)
+    this.setState({
+      tags: props.article.tags
+    })
+  }
 
   handleClose = (removedTag) => {
     const tags = this.state.tags.filter(tag => tag !== removedTag);
+    this.props.dispatch(removeTag(removedTag));
     this.setState({ tags });
   }
 
@@ -61,10 +69,10 @@ class EditableTagGroup extends Component {
     const { tags, inputVisible, inputValue } = this.state;
     return (
       <div>
-        {tags.map((tag, index) => {
+        { tags && tags.map((tag, index) => {
           const isLongTag = tag.length > 20;
           const tagElem = (
-            <Tag key={tag} closable={index !== 0} afterClose={() => this.handleClose(tag)}>
+            <Tag key={index} closable={index !== 0} afterClose={() => this.handleClose(tag)}>
               {isLongTag ? `${tag.slice(0, 20)}...` : tag}
             </Tag>
           );

@@ -11,10 +11,10 @@ import {
 } from '../../actions/index';
 import WrappedAddForm from './addArticleModal';
 
-const openNotification = () => {
+const openNotification = (note) => {
   notification.open({
-    message: 'Notification Title',
-    description: 'This is the content of the notification. This is the content of the notification.',
+    message: 'Notification',
+    description: note,
     icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
   });
 };
@@ -27,6 +27,7 @@ class Articles extends Component {
       loading: false,
       visible: false,
     }
+    this.isEditMode = false;
   }
 
   componentWillMount() {
@@ -39,7 +40,6 @@ class Articles extends Component {
           ele.key = index;
           return ele;
         });
-        console.log(data)
         this.setState({
           articleList: data
         })
@@ -57,17 +57,15 @@ class Articles extends Component {
 
   handleOk = () => {
     if (this.props.article.tags.length === 0) {
-      openNotification();
       return;
     }
-    this.setState({ loading: true });
     this.setData();
-    this.setState({ loading: false, visible: false });
+    this.setState({ visible: false });
 
     Http.post(Http.url('article/upsert'), this.props.token, this.props.article, (res) => {
-      console.log('res: ', res);
-      this.props.dispatch(clear());
+      if(res.status === 0){ openNotification('operation success!') }
       this.setState({ loading: false, visible: false });
+      this.props.dispatch(clear());
     }, (err) => {
       console.log('err: ', err);
     })
@@ -78,23 +76,45 @@ class Articles extends Component {
   };
 
   setData = () => {
-    let newArticle = {};
-    newArticle.date = new Date().toISOString();
-    this.props.dispatch(editArticle(newArticle));
-    let list = [ ...this.state.articleList, this.props.article ].map((ele, index) => {
-      ele.key = index;
+    let exist = false;
+    let newList = this.state.articleList.map(ele => {
+      if(ele._id === this.props.article._id){
+        exist = true;
+        return this.props.article;
+      }
       return ele;
     });
+    if(!exist){
+      newList = [ ...this.state.articleList, this.props.article ].map((ele, index) => {
+        ele.key = index;
+        return ele;
+      });
+    }
+
     this.setState({
-      articleList: list
+      articleList: newList
     });
   };
 
   editArticle(index, article) {
-    console.log(index, article)
-    this.props.dispatch(editArticle(article))
+    this.props.dispatch(clear());
+    this.props.dispatch(editArticle(article));
     this.setState({
       visible: true
+    })
+  }
+
+  removeArticle(index, article) {
+    this.props.dispatch(clear());
+    Http.post(Http.url('article/remove'), this.props.token, { id: article._id }, (res) => {
+      console.log('res: ', res);
+      openNotification('operation success!');
+    }, (err) => {
+      console.log('err: ', err);
+    })
+    let list = this.state.articleList.filter(_ => _._id !== article._id);
+    this.setState({
+      articleList: list
     })
   }
 
@@ -120,6 +140,7 @@ class Articles extends Component {
         </div>
         <Table dataSource={this.state.articleList}
                initTags={this.props.article.tags}
+               removeArticle={(index, article) => this.removeArticle(index, article)}
                editArticle={(index, article) => this.editArticle(index, article)}/>
       </div>
     )
