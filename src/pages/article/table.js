@@ -3,8 +3,6 @@ import { Table, Icon, Menu, Dropdown, Button, Tag } from 'antd';
 
 const colors = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple']
 
-
-
 export default class articleTable extends Component {
   constructor(props) {
     super(props);
@@ -30,7 +28,6 @@ export default class articleTable extends Component {
       dataIndex: 'date',
       key: 'date',
       render: (date) => {
-        console.log(date)
         return <span><Icon type="calendar" />{date || new Date().toISOString()}</span>
       }
     }, {
@@ -44,7 +41,7 @@ export default class articleTable extends Component {
               <Button onClick={() => this.edit(text, record)}>编辑</Button>
             </Menu.Item>
             <Menu.Item>
-              <Button>删除</Button>
+              <Button onClick={() => this.remove(text, record)}>删除</Button>
             </Menu.Item>
           </Menu>
         );
@@ -66,6 +63,10 @@ export default class articleTable extends Component {
 
   edit(text, record){
     this.props.editArticle && this.props.editArticle(text, record);
+  }
+
+  remove(text, record){
+    this.props.removeArticle && this.props.removeArticle(text, record);
   }
 
   render() {

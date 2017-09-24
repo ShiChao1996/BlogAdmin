@@ -32,7 +32,7 @@ class ArticleDetail extends Component {
 
   componentWillReceiveProps(props){
     this.setState({
-      text: props.article.content | ''
+      text: props.article.content || ''
     })
   }
 
@@ -48,7 +48,7 @@ class ArticleDetail extends Component {
           <Row>
             <Col span={12}>
               <TextArea rows={30}
-                        defaultValue={this.state.text}
+                        value={this.state.text}
                         onChange={(e) => this.setState({ text: e.target.value })}/>
             </Col>
             <Col span={12}>
