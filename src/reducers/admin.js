@@ -28,7 +28,7 @@ import Actions from "../actions/config";
 
 const initialState = {
   logged: false,
-  token: 'hhhhhjjjjjj'
+  token: ''
 };
 
 export function admin(state = initialState, action) {

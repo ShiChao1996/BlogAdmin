@@ -50,6 +50,7 @@ export default class LogoGather extends React.Component {
   }
 
   onMouseEnter = () => {
+    console.log('enter')
     // !this.gather && this.updateTweenData();
     if (!this.gather) {
       this.updateTweenData();
@@ -58,6 +59,7 @@ export default class LogoGather extends React.Component {
   };
 
   onMouseLeave = () => {
+    console.log('leave')
     // this.gather && this.updateTweenData();
     if (this.gather) {
       this.updateTweenData();
@@ -88,6 +90,7 @@ export default class LogoGather extends React.Component {
               height: r,
               opacity: b,
               backgroundColor: `rgb(${Math.round(Math.random() * 95 + 160)},255,255)`,
+              //backgroundColor: '#2b283b'
             }}
             animation={{
               y: (Math.random() * 2 - 1) * 10 || 5,

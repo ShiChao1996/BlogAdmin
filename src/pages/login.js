@@ -55,7 +55,7 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      image: require('../image/background.png'),
+      image: require('../image/a.png'),
       pixSize: 20,
       pointSize: 10,
       isMode: false,

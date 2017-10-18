@@ -18,6 +18,7 @@ class EditableTagGroup extends Component {
 
   componentWillMount(){
     if(this.props.article.tags){
+      console.log('tags: ', this.props.article.tags)
       this.setState({
         tags: this.props.article.tags
       });
@@ -27,7 +28,7 @@ class EditableTagGroup extends Component {
   componentWillReceiveProps(props){
     console.log('this.is default tags: ', props)
     this.setState({
-      tags: props.article.tags
+      tags: props.article.tags || []
     })
   }
 
