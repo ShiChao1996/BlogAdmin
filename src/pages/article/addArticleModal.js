@@ -5,11 +5,14 @@ import { connect } from "react-redux";
 import Tags from '../../components/tagsGroup';
 import { tools } from '../../utils/tools';
 import ArticleDetail from './articleDetail';
+import Uploader from '../../components/uploader';
 import './articles.css';
 import {
   clear,
-  editArticle
+  editArticle,
+  setImg
 } from '../../actions/index';
+import './addArticleModal.css';
 
 const FormItem = Form.Item;
 
@@ -29,6 +32,10 @@ class AddForm extends Component {
       article: props.article,
       title: props.article.title
     })
+  }
+
+  handleImg = (imgUrl) => {
+    this.props.dispatch(setImg(imgUrl));
   }
 
   handleSubmit = () => {
@@ -51,7 +58,8 @@ class AddForm extends Component {
           <Tags/>
         </FormItem>
         <FormItem>
-          <Button onClick={() => this.setState({ visible: true })}>添加内容</Button>
+          <Button onClick={() => this.setState({ visible: true })}>{this.state.article.content ? '修改内容' : '添加内容'}</Button>
+          {!this.state.article.content ? null : <Icon className='checkIcon' type="check-circle" />}
           <Modal
             width='90%'
             style={{ top: 20 }}
@@ -63,6 +71,9 @@ class AddForm extends Component {
           >
             <ArticleDetail closeModal={() => this.setState({ visible: false })}/>
           </Modal>
+        </FormItem>
+        <FormItem>
+          <Uploader initImg={this.state.article.img} handleImg={this.handleImg} />
         </FormItem>
         <FormItem>
           <Button key="back" size="large" onClick={() => this.props.closeModal()}>Return</Button>

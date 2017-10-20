@@ -45,6 +45,13 @@ function saveContent(content) {
   };
 }
 
+function setImg(img) {
+  return {
+    type: Actions.SET_IMAGE,
+    image: img
+  }
+}
+
 function editArticle(article) {
   return {
     type: Actions.EDIT_ARTICLE,
@@ -63,5 +70,6 @@ export const article = {
   removeTag,
   saveContent,
   editArticle,
+  setImg,
   clear
 };
