@@ -73,7 +73,7 @@ class AddForm extends Component {
           </Modal>
         </FormItem>
         <FormItem>
-          <Uploader initImg={this.state.article.img} handleImg={this.handleImg} />
+          <Uploader initImg={this.state.article.image} handleImg={this.handleImg} />
         </FormItem>
         <FormItem>
           <Button key="back" size="large" onClick={() => this.props.closeModal()}>Return</Button>

@@ -62,6 +62,7 @@ class Articles extends Component {
     this.setData();
     this.setState({ visible: false });
 
+    console.log('article: ', this.props.article)
     Http.post(Http.url('article/upsert'), this.props.token, this.props.article, (res) => {
       if(res.status === 0){ openNotification('operation success!') }
       this.setState({ loading: false, visible: false });

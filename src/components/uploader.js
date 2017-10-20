@@ -18,11 +18,28 @@ export default class Uploader extends React.Component {
       this.setState({
         fileList: [{
           uid: -1,
-          //name: 'xxx.png',
           status: 'done',
           url: initImg
         }]
       })
+    }
+  }
+
+  componentWillReceiveProps(props){
+    let initImg = props.initImg;
+    if(initImg){
+      this.setState({
+        fileList: [{
+          uid: -1,
+          status: 'done',
+          url: initImg
+        }]
+      })
+    }else {
+      this.setState({
+        fileList: []
+      })
+
     }
   }
 

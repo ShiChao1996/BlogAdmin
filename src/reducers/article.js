@@ -69,8 +69,7 @@ export function article(state = initialState, action) {
 
     case Actions.SET_IMAGE: {
       let article = state.article;
-      article.img = action.img;
-      console.log('hhhhhhhhh')
+      article.image = action.image;
       return { ...state, article: article }
     }
   }
