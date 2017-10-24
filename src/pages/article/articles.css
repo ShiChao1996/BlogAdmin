@@ -9,3 +9,10 @@
     padding: 20px;
     margin: 0 auto;
 }
+
+.maPagination{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Button, notification, Icon } from 'antd';
+import { Modal, Button, notification, Icon, Pagination, Spin } from 'antd';
 import { connect } from "react-redux";
 
 import { Http } from '../../utils/http';
@@ -31,29 +31,37 @@ class Articles extends Component {
   }
 
   componentWillMount() {
+    this.get_set_article(0);
+  }
+
+  get_set_article(index = 0){
     const token = this.props.token;
     console.log('token: ', token);
-    Http.get(Http.url('article/getlist'), token, (res) => {
+    Http.post(Http.url('article/getlist'), token, {index}, (res) => {
       if (res.status === 0 && res.resp) {
-        console.log(res)
+        console.log(res);
         let data = res.resp.map((ele, index) => {
           ele.key = index;
           return ele;
         });
         this.setState({
-          articleList: data
+          articleList: data,
+          loading: false
         })
       }
     }, function (err) {
+      this.setState({
+        loading: false
+      })
       console.log(err)
-    })
+    });
   }
 
   showModal = () => {
     this.setState({
       visible: true,
     });
-  }
+  };
 
   handleOk = () => {
     if (this.props.article.tags.length === 0) {
@@ -119,9 +127,22 @@ class Articles extends Component {
     })
   }
 
+  handlePageChange = (index) => {
+    this.setState({
+      loading: true
+    });
+    this.get_set_article(index - 1);
+  };
+
   render() {
     return (
       <div className="articles">
+        {
+          this.state.loading ?
+          <div>
+            <Spin size="large" />
+          </div> : null
+        }
         <div>
           <Button type="primary" onClick={this.showModal}>
             add
@@ -143,6 +164,9 @@ class Articles extends Component {
                initTags={this.props.article.tags}
                removeArticle={(index, article) => this.removeArticle(index, article)}
                editArticle={(index, article) => this.editArticle(index, article)}/>
+        <div className="maPagination">
+          <Pagination onChange={(pageIndex)=>this.handlePageChange(pageIndex)} total={50} />
+        </div>
       </div>
     )
   }

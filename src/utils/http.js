@@ -6,7 +6,6 @@ const TIMEOUT = 10 * 1000;
 function promiseTimeout(ms, promise) {
     return new Promise((resolve, reject) => {
         const timeoutId = setTimeout(() => {
-            console.error('errorrrrr');
             reject(new Error('request timeout!'))
         }, ms);
         promise.then((res) => {

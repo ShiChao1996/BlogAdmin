@@ -19,6 +19,7 @@ export default class Uploader extends React.Component {
         fileList: [{
           uid: -1,
           status: 'done',
+          name: 'xxx',
           url: initImg
         }]
       })
@@ -55,7 +56,7 @@ export default class Uploader extends React.Component {
   handleChange = ({ fileList }) => {
     console.log(fileList);
     let handleImg = this.props.handleImg;
-    handleImg && handleImg(fileList[0].thumbUrl);
+    handleImg && fileList[0] && handleImg(fileList[0].thumbUrl);
     this.setState({ fileList })
   };
 

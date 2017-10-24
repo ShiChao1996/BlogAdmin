@@ -10,6 +10,11 @@ export default class articleTable extends Component {
       dataSource: []
     }
 
+    this.pagination = {
+      onChange: ()=>console.log('dfdf'),
+      total: 10,
+    }
+
     this.columns = [ {
       title: 'Title',
       dataIndex: 'title',
@@ -71,7 +76,11 @@ export default class articleTable extends Component {
 
   render() {
     return (
-      <Table columns={this.columns} dataSource={this.state.dataSource}/>
+      <Table
+        columns={this.columns}
+        dataSource={this.state.dataSource}
+        pagination={false}
+      />
     )
   }
 }
