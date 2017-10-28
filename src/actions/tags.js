@@ -22,19 +22,15 @@
  * SOFTWARE.
  */
 
-"use strict";
+import Actions from "./config";
 
-import { admin } from "./admin";
-import { article } from "./article";
-import { tags } from "./tags";
+function setTags(tags) {
+  return {
+    type: Actions.SET_TAGS,
+    tags: tags
+  };
+}
 
-module.exports = {
-  ...admin,
-  ...article,
-  ...tags
+export const tags = {
+  setTags
 };
-
-// actions/
-// config/actions.js
-// reducers/
-// view

@@ -6,6 +6,7 @@
   "dependencies": {
     "animate.css": "^3.5.2",
     "antd": "^2.1.0",
+    "moment": "^2.19.1",
     "rc-queue-anim": "^1.2.2",
     "rc-tween-one": "^1.4.5",
     "react": "^15.1.0",

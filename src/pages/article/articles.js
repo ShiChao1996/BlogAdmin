@@ -7,7 +7,8 @@ import Table from './table';
 import './articles.css';
 import {
   clear,
-  editArticle
+  editArticle,
+  setTags
 } from '../../actions/index';
 import WrappedAddForm from './addArticleModal';
 
@@ -32,6 +33,15 @@ class Articles extends Component {
 
   componentWillMount() {
     this.get_set_article(0);
+    this.get_set_tags();
+  }
+
+  get_set_tags(){
+    Http.get(Http.url('article/gettags'), '', (res) => {
+      if(res.status === 0){
+        this.props.dispatch(setTags(res.resp.tags))
+      }
+    })
   }
 
   get_set_article(index = 0){
@@ -49,10 +59,10 @@ class Articles extends Component {
           loading: false
         })
       }
-    }, function (err) {
+    }, (err) => {
       this.setState({
         loading: false
-      })
+      });
       console.log(err)
     });
   }
@@ -163,7 +173,9 @@ class Articles extends Component {
         <Table dataSource={this.state.articleList}
                initTags={this.props.article.tags}
                removeArticle={(index, article) => this.removeArticle(index, article)}
-               editArticle={(index, article) => this.editArticle(index, article)}/>
+               editArticle={(index, article) => this.editArticle(index, article)}
+               filterTags={this.props.tags}
+        />
         <div className="maPagination">
           <Pagination onChange={(pageIndex)=>this.handlePageChange(pageIndex)} total={50} />
         </div>
@@ -175,7 +187,8 @@ class Articles extends Component {
 function select(store) {
   return {
     token: store.admin.token,
-    article: store.article.article
+    article: store.article.article,
+    tags: store.tags.tags
   }
 }
 

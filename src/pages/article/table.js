@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Icon, Menu, Dropdown, Button, Tag } from 'antd';
+import moment from 'moment';
 
 const colors = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple']
 
@@ -7,7 +8,8 @@ export default class articleTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataSource: []
+      dataSource: [],
+      filterTags: []
     }
 
     this.pagination = {
@@ -27,13 +29,21 @@ export default class articleTable extends Component {
         return tags.map((tag, index) => {
           return <Tag key={index} color={colors[index]}>{tag}</Tag>
         })
-      }
+      },
+      filters: this.state.filterTags,
+      filterMultiple: false,
+      onFilter: (value, record) => record.tags.includes(value),
     }, {
       title: 'date',
       dataIndex: 'date',
       key: 'date',
       render: (date) => {
-        return <span><Icon type="calendar" />{date || new Date().toISOString()}</span>
+        return <span><Icon type="calendar" />{moment(date).format("LLLL") || moment().format("LLLL")}</span>
+      },
+      sorter: (a, b) => {
+        let data1 = new Date(a.date).getTime();
+        let data2 = new Date(b.date).getTime();
+        return data1 - data2;
       }
     }, {
       title: 'Action',
@@ -61,6 +71,13 @@ export default class articleTable extends Component {
   }
 
   componentWillReceiveProps(props) {
+    console.log('filterTags: ',props.filterTags)
+    let newFilterTags = props.filterTags.map(tag => {
+      return{
+        text: tag,
+        value: tag,
+      }
+    });
     this.setState({
       dataSource: props.dataSource
     })

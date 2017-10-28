@@ -38,6 +38,10 @@ module.exports = {
   CLEAR: "CLEAR",
   SET_IMAGE: "SET_IMAGE",
 
+
+  //tags
+  SET_TAGS: "SET_TAGS",
+
   //http
   GET_PERSONAL_PAGE_INFO: "GET_PERSONAL_PAGE_INFO",
   GET_USER_INFO: "GET_USER_INFO"

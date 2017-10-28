@@ -24,17 +24,18 @@
 
 "use strict";
 
-import { admin } from "./admin";
-import { article } from "./article";
-import { tags } from "./tags";
+import Actions from "../actions/config";
 
-module.exports = {
-  ...admin,
-  ...article,
-  ...tags
+const initialState = {
+  tags: []
 };
 
-// actions/
-// config/actions.js
-// reducers/
-// view
+export function tags(state = initialState, action) {
+  switch (action.type) {
+    case Actions.SET_TAGS: {
+      return { ...state, tags: action.tags };
+    }
+  }
+
+  return state;
+}
