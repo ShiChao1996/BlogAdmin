@@ -16,7 +16,7 @@ const openNotification = (note) => {
   notification.open({
     message: 'Notification',
     description: note,
-    icon: <Icon type="smile-circle" style={{ color: '#108ee9' }} />,
+    icon: <Icon type="smile-circle" style={{ color: '#108ee9' }}/>,
   });
 };
 
@@ -33,21 +33,12 @@ class Articles extends Component {
 
   componentWillMount() {
     this.get_set_article(0);
-    this.get_set_tags();
   }
 
-  get_set_tags(){
-    Http.get(Http.url('article/gettags'), '', (res) => {
-      if(res.status === 0){
-        this.props.dispatch(setTags(res.resp.tags))
-      }
-    })
-  }
-
-  get_set_article(index = 0){
+  get_set_article(index = 0) {
     const token = this.props.token;
     console.log('token: ', token);
-    Http.post(Http.url('article/getlist'), token, {index}, (res) => {
+    Http.post(Http.url('article/getlist'), token, { index }, (res) => {
       if (res.status === 0 && res.resp) {
         console.log(res);
         let data = res.resp.map((ele, index) => {
@@ -82,7 +73,9 @@ class Articles extends Component {
 
     console.log('article: ', this.props.article)
     Http.post(Http.url('article/upsert'), this.props.token, this.props.article, (res) => {
-      if(res.status === 0){ openNotification('operation success!') }
+      if (res.status === 0) {
+        openNotification('operation success!')
+      }
       this.setState({ loading: false, visible: false });
       this.props.dispatch(clear());
     }, (err) => {
@@ -97,13 +90,13 @@ class Articles extends Component {
   setData = () => {
     let exist = false;
     let newList = this.state.articleList.map(ele => {
-      if(ele._id === this.props.article._id){
+      if (ele._id === this.props.article._id) {
         exist = true;
         return this.props.article;
       }
       return ele;
     });
-    if(!exist){
+    if (!exist) {
       newList = [ ...this.state.articleList, this.props.article ].map((ele, index) => {
         ele.key = index;
         return ele;
@@ -130,7 +123,7 @@ class Articles extends Component {
       openNotification('operation success!');
     }, (err) => {
       console.log('err: ', err);
-    })
+    });
     let list = this.state.articleList.filter(_ => _._id !== article._id);
     this.setState({
       articleList: list
@@ -149,9 +142,9 @@ class Articles extends Component {
       <div className="articles">
         {
           this.state.loading ?
-          <div>
-            <Spin size="large" />
-          </div> : null
+            <div>
+              <Spin size="large"/>
+            </div> : null
         }
         <div>
           <Button type="primary" onClick={this.showModal}>
@@ -177,7 +170,7 @@ class Articles extends Component {
                filterTags={this.props.tags}
         />
         <div className="maPagination">
-          <Pagination onChange={(pageIndex)=>this.handlePageChange(pageIndex)} total={50} />
+          <Pagination onChange={(pageIndex) => this.handlePageChange(pageIndex)} total={50}/>
         </div>
       </div>
     )

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { Form, Icon, Input, Button } from 'antd';
 const FormItem = Form.Item;
 import Animate from './animate';
@@ -6,7 +6,8 @@ import './login.css';
 import { Http } from '../utils/http';
 import {connect} from "react-redux";
 import {
-  login
+  login,
+  setTags
 } from '../actions/index';
 
 class NormalLoginForm extends React.Component {
@@ -51,7 +52,7 @@ class NormalLoginForm extends React.Component {
 
 const WrappedNormalLoginForm = Form.create()(NormalLoginForm);
 
-class Login extends React.Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -61,6 +62,18 @@ class Login extends React.Component {
       isMode: false,
       show: false,
     };
+  }
+
+  componentWillMount(){
+    this.get_set_tags();
+  }
+
+  get_set_tags(){
+    Http.get(Http.url('article/gettags'), '', (res) => {
+      if(res.status === 0){
+        this.props.dispatch(setTags(res.resp.tags));
+      }
+    })
   }
 
   render() {

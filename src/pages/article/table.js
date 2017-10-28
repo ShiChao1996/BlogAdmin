@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Table, Icon, Menu, Dropdown, Button, Tag } from 'antd';
 import moment from 'moment';
 
-const colors = ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple']
+const colors = [ 'pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple' ]
 
 export default class articleTable extends Component {
   constructor(props) {
@@ -13,10 +13,26 @@ export default class articleTable extends Component {
     }
 
     this.pagination = {
-      onChange: ()=>console.log('dfdf'),
+      onChange: () => console.log('dfdf'),
       total: 10,
     }
 
+
+  }
+
+  componentWillReceiveProps(props) {
+    this.setState({
+      dataSource: props.dataSource
+    })
+  }
+
+  componentWillMount() {
+    let newFilterTags = this.props.filterTags.map(tag => {
+      return {
+        text: tag,
+        value: tag,
+      }
+    });
     this.columns = [ {
       title: 'Title',
       dataIndex: 'title',
@@ -27,10 +43,10 @@ export default class articleTable extends Component {
       key: 'tag',
       render: (tags) => {
         return tags.map((tag, index) => {
-          return <Tag key={index} color={colors[index]}>{tag}</Tag>
+          return <Tag key={index} color={colors[ index ]}>{tag}</Tag>
         })
       },
-      filters: this.state.filterTags,
+      filters: newFilterTags,
       filterMultiple: false,
       onFilter: (value, record) => record.tags.includes(value),
     }, {
@@ -38,7 +54,7 @@ export default class articleTable extends Component {
       dataIndex: 'date',
       key: 'date',
       render: (date) => {
-        return <span><Icon type="calendar" />{moment(date).format("LLLL") || moment().format("LLLL")}</span>
+        return <span><Icon type="calendar"/>{moment(date).format("LLLL") || moment().format("LLLL")}</span>
       },
       sorter: (a, b) => {
         let data1 = new Date(a.date).getTime();
@@ -70,24 +86,11 @@ export default class articleTable extends Component {
     } ];
   }
 
-  componentWillReceiveProps(props) {
-    console.log('filterTags: ',props.filterTags)
-    let newFilterTags = props.filterTags.map(tag => {
-      return{
-        text: tag,
-        value: tag,
-      }
-    });
-    this.setState({
-      dataSource: props.dataSource
-    })
-  }
-
-  edit(text, record){
+  edit(text, record) {
     this.props.editArticle && this.props.editArticle(text, record);
   }
 
-  remove(text, record){
+  remove(text, record) {
     this.props.removeArticle && this.props.removeArticle(text, record);
   }
 
