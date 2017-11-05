@@ -18,21 +18,24 @@ class ArticleDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: ''
+      text: '',
+      loading: false
     }
   }
 
   componentWillMount() {
     if (this.props.article.content) {
       this.setState({
-        text: this.props.article.content
+        text: this.props.article.content,
+        loading: this.props.loading
       })
     }
   }
 
   componentWillReceiveProps(props){
     this.setState({
-      text: props.article.content || ''
+      text: props.article.content || '',
+      loading: props.loading
     })
   }
 
@@ -47,6 +50,12 @@ class ArticleDetail extends Component {
         <div className="content">
           <Row>
             <Col span={12}>
+              {
+                this.state.loading ?
+                  <div>
+                    <Spin size="large"/>
+                  </div> : null
+              }
               <TextArea rows={30}
                         value={this.state.text}
                         onChange={(e) => this.setState({ text: e.target.value })}/>

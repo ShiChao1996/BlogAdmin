@@ -3,14 +3,15 @@ import { Input, Icon, Modal, Button, Form } from 'antd';
 import { connect } from "react-redux";
 
 import Tags from '../../components/tagsGroup';
-import { tools } from '../../utils/tools';
+import { Http } from '../../utils/http';
 import ArticleDetail from './articleDetail';
 import Uploader from '../../components/uploader';
 import './articles.css';
 import {
   clear,
   editArticle,
-  setImg
+  setImg,
+  saveContent
 } from '../../actions/index';
 import './addArticleModal.css';
 
@@ -22,17 +23,45 @@ class AddForm extends Component {
     this.state = {
       visible: false,
       title: this.props.article.title,
-      article: this.props.article
+      article: this.props.article,
+      loading: false
     }
   }
 
   componentWillReceiveProps(props) {
-    console.log('thsi.is props received: ', props.article)
+    console.log('thsi.is props received: ', props.article);
     this.setState({
       article: props.article,
       title: props.article.title
     })
   }
+
+  openContent = () => {
+    this.setState({
+      visible: true
+    });
+    if(!this.state.article.content){
+      this.setState({
+        loading: true
+      });
+      Http.post(Http.url('article/getcontent'), '', { _id: this.props.article.contentId }, (res) => {
+        if (res.status === 0 && res.resp) {
+          console.log(res);
+          this.state.article.content = res.resp.content;
+          this.setState({
+            loading: false,
+            article: this.state.article
+          });
+          this.props.dispatch(saveContent(res.resp.content));
+        }
+      }, (err) => {
+        this.setState({
+          loading: false
+        });
+        console.log(err)
+      });
+    }
+  };
 
   handleImg = (imgUrl) => {
     this.props.dispatch(setImg(imgUrl));
@@ -51,14 +80,14 @@ class AddForm extends Component {
       <Form className="login-form">
         <FormItem>
           <Input value={this.state.title} onChange={(e) => this.setState({ title: e.target.value })}
-            prefix={<Icon type="bars" style={{ fontSize: 14 }}/>} placeholder="title"/>
+            prefix={<Icon type="bars" style={{ fontSize: 14 }}/>} placeholder="title" />
         </FormItem>
 
         <FormItem>
           <Tags/>
         </FormItem>
         <FormItem>
-          <Button onClick={() => this.setState({ visible: true })}>{this.state.article.content ? '修改内容' : '添加内容'}</Button>
+          <Button onClick={this.openContent}>{this.state.article.content ? '修改内容' : '添加内容'}</Button>
           {!this.state.article.content ? null : <Icon className='checkIcon' type="check-circle" />}
           <Modal
             width='90%'
@@ -69,7 +98,7 @@ class AddForm extends Component {
             onCancel={this.handleCancel}
             footer={null}
           >
-            <ArticleDetail closeModal={() => this.setState({ visible: false })}/>
+            <ArticleDetail closeModal={() => this.setState({ visible: false })} loading={this.state.loading} />
           </Modal>
         </FormItem>
         <FormItem>

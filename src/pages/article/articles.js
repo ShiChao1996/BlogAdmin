@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Button, notification, Icon, Pagination, Spin } from 'antd';
+import { Modal, Button, notification, Icon, Pagination, Spin, Card } from 'antd';
 import { connect } from "react-redux";
 
 import { Http } from '../../utils/http';
@@ -27,7 +27,8 @@ class Articles extends Component {
       articleList: [],
       loading: false,
       visible: false,
-    }
+      totalLength: 10
+    };
     this.isEditMode = false;
   }
 
@@ -38,10 +39,13 @@ class Articles extends Component {
   get_set_article(index = 0) {
     const token = this.props.token;
     console.log('token: ', token);
-    Http.post(Http.url('article/getlist'), token, { index }, (res) => {
+    Http.post(Http.url('article/getslice'), token, { index }, (res) => {
       if (res.status === 0 && res.resp) {
         console.log(res);
-        let data = res.resp.map((ele, index) => {
+        this.setState({
+          totalLength: res.resp.length
+        });
+        let data = res.resp.list.map((ele, index) => {
           ele.key = index;
           return ele;
         });
@@ -147,9 +151,6 @@ class Articles extends Component {
             </div> : null
         }
         <div>
-          <Button type="primary" onClick={this.showModal}>
-            add
-          </Button>
           <Modal
             visible={this.state.visible}
             title="Title"
@@ -163,15 +164,21 @@ class Articles extends Component {
               save={() => this.handleOk()}/>
           </Modal>
         </div>
-        <Table dataSource={this.state.articleList}
-               initTags={this.props.article.tags}
-               removeArticle={(index, article) => this.removeArticle(index, article)}
-               editArticle={(index, article) => this.editArticle(index, article)}
-               filterTags={this.props.tags}
-        />
-        <div className="maPagination">
-          <Pagination onChange={(pageIndex) => this.handlePageChange(pageIndex)} total={50}/>
-        </div>
+        <Card>
+          <Button type="primary" onClick={this.showModal} style={{marginBottom:10}}>
+            add
+          </Button>
+          <Table dataSource={this.state.articleList}
+                 initTags={this.props.article.tags}
+                 removeArticle={(index, article) => this.removeArticle(index, article)}
+                 editArticle={(index, article) => this.editArticle(index, article)}
+                 filterTags={this.props.tags}
+          />
+          <div className="maPagination">
+            <Pagination onChange={(pageIndex) => this.handlePageChange(pageIndex)} total={this.state.totalLength}/>
+          </div>
+        </Card>
+
       </div>
     )
   }
