@@ -1,34 +1,36 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import {
+/*import {
     Route,
     Link,
     Router,
     hashHistory,
     IndexRoute
-} from 'react-router';
-import {createStore, applyMiddleware} from 'redux';
-import {Provider} from 'react-redux';
+} from 'react-router';*/
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import './index.css';
 import Login from './src/pages/login';
 import ArticleDetail from './src/pages/article/articleDetail';
 import Articles from './src/pages/article/articles';
 import reducers from './src/reducers/index';
+import Container from './src/container/container';
+import {
+  HashRouter,
+  Route
+} from 'react-router-dom';
+import App from './src/app';
 
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
 
 const router = (
   <Provider store={store}>
-    <Router history={hashHistory}>
-      <Route path="/">
-        <IndexRoute component={Login} />
-        <Route path="/articles" component={Articles}/>
-        <Route path="/articledetail" component={ArticleDetail}/>
-      </Route>
-    </Router>
+    <HashRouter>
+      <App />
+    </HashRouter>
   </Provider>
 
 )

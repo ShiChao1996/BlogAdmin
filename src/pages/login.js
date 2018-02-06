@@ -88,7 +88,7 @@ class Login extends Component {
   child = () => {
     return (
       <div className='loginBox'>
-        <a href='/#/articles' id='loginLink' style={{display: 'none'}}>aaaa</a>
+        <a href='/#/container' id='loginLink' style={{display: 'none'}}>aaaa</a>
         <WrappedNormalLoginForm login={(val) => this.handleLogin(val)}/>
       </div>
     )

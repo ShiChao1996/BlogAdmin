@@ -84,8 +84,8 @@ function requestByPost(url, token, params, onSucceed, onFailure) {
 }
 
 function getUrl(path) {
-  //return 'http://47.95.229.232:7001/' + path;
-  return 'http://127.0.0.1:7005/' + path;
+  //return 'http://47.95.229.232:8080/' + path;
+  return 'http://api.littlechao.top/' + path;
 }
 
 export const Http = {
