@@ -25,17 +25,23 @@ function zeroArr(length) {
   return [ ...Array(length) ].map(_ => 0);
 }
 
+var i = 0;
 function generalKey() {
-  let i = 1;
   if(i > 1000){
     i = 1;
   }
+  i += 1;
   return Date.now().toString() + i;
+}
+
+function randomInt(min, max) {
+  return Math.floor(max * Math.random()) - min;
 }
 
 export const tools = {
   copyAttrExcept,
   zeroArr,
   copyAttr,
-  generalKey
+  generalKey,
+  randomInt
 }

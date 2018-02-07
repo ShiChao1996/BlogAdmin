@@ -16,8 +16,6 @@ export default class articleTable extends Component {
       onChange: () => console.log('dfdf'),
       total: 10,
     }
-
-
   }
 
   componentWillReceiveProps(props) {

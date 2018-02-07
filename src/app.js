@@ -32,12 +32,15 @@ import Container from './container/container';
 import Login from './pages/login';
 import {
   Route
-} from 'react-router-dom'
+} from 'react-router-dom';
+import Articles from './pages/article/articles';
+import ArticleList from './components/list';
 
 const App = () => (
   <div>
     <Route path="/" exact component={Login}/>
     <Route path="/container" component={Container}/>
+    <Route path="/article" component={Articles}/>
   </div>
 );
 
