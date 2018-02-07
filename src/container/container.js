@@ -3,13 +3,18 @@ import {
   Route,
   Link
 } from 'react-router-dom';
-import { Layout, Menu, Breadcrumb, Icon, Avatar } from 'antd';
-
-const { Header, Content, Footer, Sider } = Layout;
-const SubMenu = Menu.SubMenu;
+import {
+  Layout,
+  Menu,
+  Breadcrumb,
+  Icon,
+  Avatar
+} from 'antd';
 import './index.css';
 import ArticleList from '../components/list';
 import ArticleDetail from '../components/articleDetail';
+
+const { Header, Content, Footer, Sider } = Layout;
 
 export default class Container extends Component {
   constructor(props) {

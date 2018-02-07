@@ -68,7 +68,6 @@ class List extends Component {
 function select(store) {
   return {
     token: store.admin.token,
-    //article: store.article.article,
     tags: store.tags.tags
   }
 }

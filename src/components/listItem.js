@@ -40,16 +40,20 @@ import {
   Link,
 } from 'react-router-dom';
 import './listItem.css';
+import { connect } from "react-redux";
+import {
+  editArticle
+} from '../actions/index';
 
 const colors = [ 'pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple' ];
 
-export default class ArticleListItem extends Component {
+class ArticleListItem extends Component {
   constructor(props) {
     super(props);
   }
 
   render() {
-    const { article } = this.props;
+    const { article, dispatch } = this.props;
     const image = article.image ? article.image.slice(15) : '';
     return (
       <div className="listItem" data-aos="fade-up">
@@ -59,9 +63,10 @@ export default class ArticleListItem extends Component {
             <h1>
               <Link to={{
                 pathname: '/container/article',
-                query: {_id: article.contentId},
-                search: "_id=" + article.contentId,
-              }}>
+                query: { _id: article._id },
+                search: "_id=" + article._id,
+              }}
+                    onClick={() => dispatch(editArticle(article))}>
                 {article.title}
               </Link>
             </h1>
@@ -80,3 +85,5 @@ export default class ArticleListItem extends Component {
     )
   }
 }
+
+export default connect()(ArticleListItem);

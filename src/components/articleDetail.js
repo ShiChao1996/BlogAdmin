@@ -30,29 +30,39 @@
 import React, { Component } from 'react';
 import {
   Spin,
-  Card
+  Card,
+  Icon,
+  Tag
 } from 'antd';
 import MarkDown from '../components/markdown';
-//import './articleDetail.css';
+import { connect } from "react-redux";
+import moment from 'moment';
 import { Http } from '../utils/http';
+import { tools } from '../utils/tools';
+import './articleDetail.css';
 
-export default class ArticleDetail extends Component {
+const colors = [ 'pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple' ];
+
+class ArticleDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: ''
+      text: '',
+      article: null
     }
   }
 
   componentWillMount() {
+    //console.log(this.props.article);
     let data = {
       _id: this.props.location.search.slice(5)
     };
-    Http.post(Http.url('article/getcontent'),"", data, (res) => {
-      console.log("res: ",res)
+    Http.post(Http.url('article/getdetail'), "", data, (res) => {
       if (res.status === 0) {
+        console.log('resp: ', res.resp);
         let md = res.resp.content;
         this.setState({
+          article: res.resp,
           text: md.toString()
         })
       }
@@ -61,14 +71,61 @@ export default class ArticleDetail extends Component {
 
   render() {
     return (
-      <div className='article-content'>
-        <Card>
+      <div className="detail-content">
+        <div className="top-bar">
+          <Icon type="edit" className="edit-btn"/>
+        </div>
+
+        <Card style={{ width: '100%' }}>
           {
-            this.state.text === "" ? <Spin size="large"/> : <MarkDown text={this.state.text}/>
+            this.state.article ? <ArticleInfo article={this.state.article}/> : null
           }
+          <div style={styles.markdown}>
+            {
+              this.state.text === "" ? <Spin size="large"/> : <MarkDown text={this.state.text}/>
+            }
+          </div>
+
         </Card>
       </div>
     )
   }
 }
 
+const styles = {
+  markdown: {
+    width: "100%",
+  }
+};
+
+class ArticleInfo extends Component {
+  render() {
+    const { article } = this.props;
+    const image = article.image ? article.image.slice(15) : '';
+    return (
+      <div className="info">
+        <h1 className="info-title">{article.title}</h1>
+        <p className="info-date">{moment(article.date).format("LL")}</p>
+        <div className="info-tags">
+          {article.tags.map((tag, Index) => {
+            return <Tag key={tools.generalKey()} className="tag"
+                        color={colors[ tools.randomInt(0, colors.length - 1) ]}>{tag}</Tag>
+          })}
+        </div>
+        {/* {
+              article.image ? <img src={Http.picUrl(image)} className="image"/> : null
+            }*/}
+        <img src="https://tse1-mm.cn.bing.net/th?id=OIP.fEstyBvbrWiYhLRPDqv55wHaHa&w=160&h=160&c=7&o=5&pid=1.7"
+             className="info-image"/>
+      </div>
+    )
+  }
+}
+
+function select(store) {
+  return {
+    article: store.article.article,
+  }
+}
+
+export default connect(select)(ArticleDetail);

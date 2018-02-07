@@ -1,0 +1,50 @@
+.edit-btn{
+    font-size: 22px;
+    transition: 0.4s all;
+}
+
+.edit-btn:hover{
+    color: #019BF0;
+}
+
+.detail-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 10px;
+    width: 100%;
+    position: relative;
+}
+
+.top-bar{
+    position: absolute;
+    padding: 5px;
+    box-sizing: border-box;
+    z-index: 10;
+    top: 20px;
+    left: 20px;
+}
+
+.info{
+
+}
+
+.info-date{
+    text-align: center;
+}
+
+.info-title{
+    text-align: center;
+    color: #0e77ca;
+}
+
+.info-tags{
+    display: flex;
+    justify-content: center;
+}
+
+.info-image{
+    display: block;
+    margin:5px auto;
+}

@@ -84,7 +84,8 @@ function requestByPost(url, token, params, onSucceed, onFailure) {
 
 function getUrl(path) {
   //return 'http://47.95.229.232:8080/' + path;
-  return 'http://api.littlechao.top/' + path;
+  //return 'http://api.littlechao.top/' + path;
+  return "http://127.0.0.1:7001/" + path;
 }
 
 export function picUrl(route) {
