@@ -1,3 +1,27 @@
 .listItem{
-    margin: 20px 10px;
+    margin: 20px auto;
+    width: 600px;
+
+}
+
+.tag{
+    transition: 0.3s all;
+}
+
+.image{
+    width: 500px;
+}
+
+.card{
+    transition: 0.3s all;
+}
+
+.card:hover{
+    transform: scale(0.95);
+}
+
+.date{
+    font-size: 18px;
+    color: #999999;
+    margin-bottom: 5px;
 }

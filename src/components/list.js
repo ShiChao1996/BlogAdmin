@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import {
-  Card
-} from 'antd';
-import QueueAnim from 'rc-queue-anim';
 import { connect } from "react-redux";
 import { Http } from '../utils/http';
 import './listItem.css'
 import ListItem from './listItem';
+import Cache from '../cache/cache';
+
+const articlelist = "articleList";
 
 class List extends Component {
   constructor(props) {
@@ -20,6 +19,12 @@ class List extends Component {
   }
 
   componentWillMount() {
+    if(Cache.exist(articlelist)){
+      this.setState({
+        list: Cache.getCache(articlelist)
+      });
+      return;
+    }
     const token = this.props.token;
     console.log('token: ', token);
     Http.post(Http.url('article/getslice'), token, { index: 0 }, (res) => {
@@ -32,6 +37,7 @@ class List extends Component {
           ele.key = index;
           return ele;
         });
+        Cache.saveList(articlelist, data);
         this.setState({
           list: data,
           loading: false
@@ -47,14 +53,14 @@ class List extends Component {
 
   render() {
     return (
-      <QueueAnim delay={1000} interval={300}>
+      <div>
         {this.state.list.map((line, index) => {
             return (
               <ListItem key={index} article={line}/>
             )
           }
         )}
-      </QueueAnim>
+      </div>
     )
   }
 }

@@ -9,6 +9,7 @@ const { Header, Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 import './index.css';
 import ArticleList from '../components/list';
+import ArticleDetail from '../components/articleDetail';
 
 export default class Container extends Component {
   constructor(props) {
@@ -40,13 +41,13 @@ export default class Container extends Component {
             <Menu.Item key="1">
               <Link to="/container/list">
                 <Icon type="pie-chart"/>
-                <span>Option 1</span>
+                <span>Articles</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="2">
               <Link to="/article">
                 <Icon type="desktop"/>
-                <span>Option 2</span>
+                <span>Me</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="3">
@@ -56,15 +57,17 @@ export default class Container extends Component {
           </Menu>
         </Sider>
         <Layout>
-          <Header style={{ background: '#fff', padding: 0 }}/>
-          <Content
-            style={{ margin: '0 16px', height: document.body.clientHeight - 150, padding: 10, overflowY: 'scroll' }}>
+          <Header style={styles.header}>
             <Bread breadcrumbs={location.pathname.split("/")}/>
+          </Header>
+          <Content
+            style={styles.content}>
             <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
               <Route path="/container/list" component={ArticleList}/>
+              <Route path="/container/article" component={ArticleDetail}/>
             </div>
           </Content>
-          <Footer style={{ textAlign: 'center' }}>
+          <Footer style={styles.footer}>
             Lovae ©2018
           </Footer>
         </Layout>
@@ -77,7 +80,7 @@ class Bread extends Component {
   render() {
     const { breadcrumbs } = this.props;
     return (
-      <Breadcrumb style={{ margin: '16px 0' }}>
+      <Breadcrumb style={{ margin: '16px' }}>
         {
           breadcrumbs.map((b, i) => {
             return (
@@ -89,3 +92,22 @@ class Bread extends Component {
     )
   }
 }
+
+const styles = {
+  content: {
+    height: document.body.clientHeight - 150,
+    padding: 10,
+    overflowY: "scroll",
+    backgroundColor: "#fff",
+  },
+
+  footer: {
+    textAlign: 'center',
+    backgroundColor: "#efefef",
+  },
+
+  header: {
+    background: '#efefef',
+    padding: 0,
+  }
+};
