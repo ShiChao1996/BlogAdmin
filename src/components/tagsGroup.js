@@ -18,7 +18,7 @@ class EditableTagGroup extends Component {
 
   componentWillMount(){
     if(this.props.article.tags){
-      console.log('tags: ', this.props.article.tags)
+      console.log('tags: ', this.props.article.tags);
       this.setState({
         tags: this.props.article.tags
       });
@@ -26,7 +26,7 @@ class EditableTagGroup extends Component {
   }
 
   componentWillReceiveProps(props){
-    console.log('this.is default tags: ', props)
+    console.log('this.is default tags: ', props);
     this.setState({
       tags: props.article.tags || []
     })
@@ -40,11 +40,11 @@ class EditableTagGroup extends Component {
 
   showInput = () => {
     this.setState({ inputVisible: true }, () => this.input.focus());
-  }
+  };
 
   handleInputChange = (e) => {
     this.setState({ inputValue: e.target.value });
-  }
+  };
 
   handleInputConfirm = () => {
     const state = this.state;

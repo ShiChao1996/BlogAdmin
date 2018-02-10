@@ -44,7 +44,7 @@ export default class Uploader extends React.Component {
     }
   }
 
-  handleCancel = () => this.setState({ previewVisible: false })
+  handleCancel = () => this.setState({ previewVisible: false });
 
   handlePreview = (file) => {
     this.setState({
@@ -54,7 +54,7 @@ export default class Uploader extends React.Component {
   };
 
   handleChange = ({ fileList }) => {
-    console.log(fileList);
+    console.log("onchange: ",fileList);
     let handleImg = this.props.handleImg;
     handleImg && fileList[0] && handleImg(fileList[0].thumbUrl);
     this.setState({ fileList })

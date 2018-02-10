@@ -32,13 +32,15 @@ import {
   Spin,
   Card,
   Icon,
-  Tag
+  Tag,
+  Tooltip
 } from 'antd';
 import MarkDown from '../components/markdown';
 import { connect } from "react-redux";
 import moment from 'moment';
 import { Http } from '../utils/http';
 import { tools } from '../utils/tools';
+import EditArticle from './editArticle';
 import './articleDetail.css';
 
 const colors = [ 'pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple' ];
@@ -48,12 +50,16 @@ class ArticleDetail extends Component {
     super(props);
     this.state = {
       text: '',
-      article: null
+      article: null,
+      editMode: false,
     }
   }
 
   componentWillMount() {
-    //console.log(this.props.article);
+    this.getData()
+  }
+
+  getData =() => {
     let data = {
       _id: this.props.location.search.slice(5)
     };
@@ -67,26 +73,63 @@ class ArticleDetail extends Component {
         })
       }
     }, (err) => console.log(err))
-  }
+  };
+
+  changeMode = (isEdit) => {
+    this.setState({
+      editMode: isEdit
+    })
+  };
+
+  saveChange = () => {
+    const edited = this.refs.editedArticle;
+    edited.upload();
+    this.changeMode(false);
+  };
+
+  cancel = () => {
+    this.changeMode(false)
+  };
 
   render() {
     return (
       <div className="detail-content">
         <div className="top-bar">
-          <Icon type="edit" className="edit-btn"/>
+          {
+            !this.state.editMode ?
+              <Tooltip placement="top" title="编辑">
+                <Icon type="edit" className="edit-btn" onClick={() => this.changeMode(true)}/>
+              </Tooltip>
+              :
+              <div>
+                <Tooltip placement="top" title="保存">
+                  <Icon type="check-circle-o" className="edit-btn" onClick={this.saveChange}/>
+                </Tooltip>
+                < Tooltip placement="top" title="取消">
+                  <Icon type="close-circle-o" className="edit-btn" onClick={this.cancel}/>
+                </Tooltip>
+              </div>
+          }
         </div>
 
-        <Card style={{ width: '100%' }}>
-          {
-            this.state.article ? <ArticleInfo article={this.state.article}/> : null
-          }
-          <div style={styles.markdown}>
-            {
-              this.state.text === "" ? <Spin size="large"/> : <MarkDown text={this.state.text}/>
-            }
-          </div>
+        {
+          !this.state.editMode ?
+            <Card style={{ width: '100%' }}>
+              {
+                this.state.article ? <ArticleInfo article={this.state.article}/> : null
+              }
+              <div style={styles.markdown}>
+                {
+                  this.state.text === "" ? <Spin size="large"/> : <MarkDown text={this.state.text}/>
+                }
+              </div>
 
-        </Card>
+            </Card>
+            :
+            <Card style={{ padding: '20px' }}>
+              <EditArticle article={this.state.article} ref="editedArticle"/>
+            </Card>
+        }
       </div>
     )
   }
@@ -101,7 +144,8 @@ const styles = {
 class ArticleInfo extends Component {
   render() {
     const { article } = this.props;
-    const image = article.image ? article.image.slice(15) : '';
+    //const image = article.image ? article.image.slice(15) : '';
+    const image = article.image ? article.image.slice(28) : '';
     return (
       <div className="info">
         <h1 className="info-title">{article.title}</h1>
@@ -112,11 +156,9 @@ class ArticleInfo extends Component {
                         color={colors[ tools.randomInt(0, colors.length - 1) ]}>{tag}</Tag>
           })}
         </div>
-        {/* {
-              article.image ? <img src={Http.picUrl(image)} className="image"/> : null
-            }*/}
-        <img src="https://tse1-mm.cn.bing.net/th?id=OIP.fEstyBvbrWiYhLRPDqv55wHaHa&w=160&h=160&c=7&o=5&pid=1.7"
-             className="info-image"/>
+        {
+          article.image ? <img src={Http.picUrl(image)} className="info-image"/> : null
+        }
       </div>
     )
   }
