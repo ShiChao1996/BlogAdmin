@@ -63,6 +63,9 @@ export default class EditArticle extends Component {
     this.article.image = this.refs.image.state.fileList[0] ? this.refs.image.state.fileList[0].thumbUrl : "";
     this.article.tags = this.refs.tags.state.tags;
     this.article.title = this.title;
+    if (this.article.image === undefined){
+      delete this.article.image;
+    }
 
     Http.post(Http.url('article/upsert'), this.props.token, this.article, (res) => {
       if (res.status === 0) {

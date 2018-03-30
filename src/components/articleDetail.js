@@ -144,8 +144,8 @@ const styles = {
 class ArticleInfo extends Component {
   render() {
     const { article } = this.props;
-    //const image = article.image ? article.image.slice(15) : '';
-    const image = article.image ? article.image.slice(28) : '';
+    const image = article.image ? article.image.slice(15) : '';
+    //const image = article.image ? article.image.slice(28) : '';
     return (
       <div className="info">
         <h1 className="info-title">{article.title}</h1>

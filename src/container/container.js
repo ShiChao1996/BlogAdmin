@@ -13,6 +13,7 @@ import {
 import './index.css';
 import ArticleList from '../components/list';
 import ArticleDetail from '../components/articleDetail';
+import File from '../pages/files/files';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -42,7 +43,7 @@ export default class Container extends Component {
             <Avatar size={this.state.collapsed ? "default" : "large"}
                     src="https://tse1-mm.cn.bing.net/th?id=OIP.fEstyBvbrWiYhLRPDqv55wHaHa&w=160&h=160&c=7&o=5&pid=1.7"/>
           </div>
-          <Menu theme="dark" defaultSelectedKeys={[ '1' ]} mode="inline">
+          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
             <Menu.Item key="1">
               <Link to="/container/list">
                 <Icon type="pie-chart"/>
@@ -56,8 +57,10 @@ export default class Container extends Component {
               </Link>
             </Menu.Item>
             <Menu.Item key="3">
-              <Icon type="file"/>
-              <span>File</span>
+              <Link to="/container/file">
+                <Icon type="file"/>
+                <span>File</span>
+              </Link>
             </Menu.Item>
           </Menu>
         </Sider>
@@ -70,6 +73,7 @@ export default class Container extends Component {
             <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
               <Route path="/container/list" component={ArticleList}/>
               <Route path="/container/article" component={ArticleDetail}/>
+              <Route path="/container/file" component={File}/>
             </div>
           </Content>
           <Footer style={styles.footer}>
