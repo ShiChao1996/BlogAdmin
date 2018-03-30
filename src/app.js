@@ -40,7 +40,6 @@ const App = () => (
   <div>
     <Route path="/" exact component={Login}/>
     <Route path="/container" component={Container}/>
-    <Route path="/article" component={Articles}/>
   </div>
 );
 

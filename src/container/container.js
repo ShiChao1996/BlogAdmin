@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import {
   Route,
-  Link
+  Link,
+  Switch
 } from 'react-router-dom';
 import {
   Layout,
@@ -14,6 +15,7 @@ import './index.css';
 import ArticleList from '../components/list';
 import ArticleDetail from '../components/articleDetail';
 import File from '../pages/files/files';
+import Articles from '../pages/article/articles';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -51,7 +53,7 @@ export default class Container extends Component {
               </Link>
             </Menu.Item>
             <Menu.Item key="2">
-              <Link to="/article">
+              <Link to="/container/articles">
                 <Icon type="desktop"/>
                 <span>Me</span>
               </Link>
@@ -71,9 +73,12 @@ export default class Container extends Component {
           <Content
             style={styles.content}>
             <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
-              <Route path="/container/list" component={ArticleList}/>
-              <Route path="/container/article" component={ArticleDetail}/>
-              <Route path="/container/file" component={File}/>
+              <Switch>
+                <Route path="/container/article" component={ArticleDetail}/>
+                <Route path="/container/file" component={File}/>
+                <Route path="/container/articles" component={Articles}/>
+                <Route path="/container/" component={ArticleList}/>
+              </Switch>
             </div>
           </Content>
           <Footer style={styles.footer}>

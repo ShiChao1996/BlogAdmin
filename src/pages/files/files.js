@@ -32,6 +32,7 @@ import {
   Card,
   Button,
 } from 'antd';
+import copy from 'copy-to-clipboard';
 
 import { Http } from '../../utils/http';
 import Upload from './fileUpload';
@@ -63,6 +64,21 @@ export default class Files extends Component {
     })
   };
 
+  handleDelete(path) {
+    Http.post(Http.url("image/delete"), "", {
+      path: path
+    })
+  }
+
+  content = (path) => {
+    return (
+      <div>
+        <Button onClick={() => copy(path)}>copy</Button>
+        <Button onclick={() => this.handleDelete(path)}>delete</Button>
+      </div>
+    )
+  };
+
   render() {
     return (
       <Card className="file-container">
@@ -72,7 +88,11 @@ export default class Files extends Component {
         {
           this.state.add ? <Upload/> :
             this.state.images.length === 0 ? null : this.state.images.map(image => {
-              return <img key={image} src={image} className="img"/>
+              return (
+                <Popover placement="bottom" content={() => this.content(image)} trigger="click">
+                  <img key={image} src={image} className="img"/>
+                </Popover>
+              );
             })
         }
       </Card>
