@@ -83,12 +83,12 @@ function requestByPost(url, token, params, onSucceed, onFailure) {
 }
 
 function getUrl(path) {
-  return 'http://api.littlechao.top/' + path;
+  return 'https://api.littlechao.top/' + path;
   //return "http://127.0.0.1:7001/" + path;
 }
 
 export function picUrl(route) {
-  return "http://image.littlechao.top/" + route;
+  return "https://image.littlechao.top/" + route;
   //return "http://127.0.0.1:5000/" + route;
 }
 

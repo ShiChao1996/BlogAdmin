@@ -30,11 +30,7 @@
 import React from 'react';
 import Container from './container/container';
 import Login from './pages/login';
-import {
-  Route
-} from 'react-router-dom';
-import Articles from './pages/article/articles';
-import ArticleList from './components/list';
+import {Route} from 'react-router-dom';
 
 const App = () => (
   <div>
